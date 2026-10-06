@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fit Calculator – Le Mystère</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#000000; --paper:#ffffff; --mute:#6b6b6b; --line:#d9d9d9; --soft:#f5f5f5; --hl:#000000; --hl-ink:#ffffff; --warn:#8a1c1c;
+  --serif:"Cormorant Garamond", "Didot", "Bodoni 72", Georgia, serif;
+  --sans:"Jost", "Futura", "Helvetica Neue", Arial, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --ink:#ffffff; --paper:#000000; --mute:#a3a3a3; --line:#333333; --soft:#141414; --hl:#ffffff; --hl-ink:#000000; --warn:#ff9a9a; }
+}
+:root[data-theme="dark"]{ --ink:#ffffff; --paper:#000000; --mute:#a3a3a3; --line:#333333; --soft:#141414; --hl:#ffffff; --hl-ink:#000000; --warn:#ff9a9a; }
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+.promo{background:#000;color:#fff;text-align:center;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:9px 16px}
+header.mast{border-bottom:1px solid var(--line);text-align:center;padding:22px 16px 18px}
+.wordmark{display:inline-block;line-height:0}
+.wordmark img{display:block;width:clamp(170px,22vw,230px);height:auto;max-width:100%}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .wordmark img{filter:invert(1)}}
+:root[data-theme="dark"] .wordmark img{filter:invert(1)}
+nav.crumb{margin-top:12px!important}
+nav.crumb{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-top:6px}
+
+.stripes{height:56px;background:repeating-linear-gradient(90deg,var(--ink) 0 14px,var(--paper) 14px 28px);border-bottom:1px solid var(--line)}
+
+main{max-width:1080px;margin:0 auto;padding:48px 20px 72px}
+h1{font-family:var(--sans);font-weight:500;font-size:clamp(26px,3.4vw,36px);letter-spacing:.16em;text-transform:uppercase;text-align:center;margin:0 0 10px}
+.lede{text-align:center;color:var(--mute);max-width:56ch;margin:0 auto 44px}
+
+.calc{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--ink)}
+@media (max-width:780px){.calc{grid-template-columns:1fr}}
+.inputs{padding:36px 32px;border-right:1px solid var(--ink)}
+@media (max-width:780px){.inputs{border-right:0;border-bottom:1px solid var(--ink)}}
+.field{margin-bottom:28px}
+.field label{display:block;font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.field p{margin:0 0 12px;font-size:14px;color:var(--mute);max-width:44ch}
+.entry{display:flex;align-items:stretch;border:1px solid var(--ink)}
+.entry button{width:48px;border:0;background:transparent;color:var(--ink);font-size:22px;font-family:var(--sans);cursor:pointer}
+.entry button:hover{background:var(--soft)}
+.entry input{flex:1;min-width:0;border:0;border-left:1px solid var(--ink);border-right:1px solid var(--ink);background:transparent;color:var(--ink);font-family:var(--sans);font-size:22px;text-align:center;padding:12px 4px;-moz-appearance:textfield}
+.entry input::-webkit-outer-spin-button,.entry input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.entry .unit{display:none}
+.rounded{font-size:13px;color:var(--mute);margin-top:8px;min-height:1.4em}
+.tip{font-size:13px;color:var(--mute);border-top:1px solid var(--line);padding-top:16px;margin-top:4px}
+
+.result{padding:36px 32px;display:flex;flex-direction:column;justify-content:center;text-align:center;background:var(--soft)}
+.result .label{font-size:13px;font-weight:500;letter-spacing:.18em;text-transform:uppercase}
+.size{font-family:var(--serif);font-weight:500;font-size:clamp(88px,14vw,148px);line-height:1;margin:10px 0 6px;letter-spacing:.02em}
+.size.flash{animation:flash .45s ease}
+@keyframes flash{from{opacity:.2;transform:translateY(6px)}to{opacity:1;transform:none}}
+.math{font-size:15px;margin:0 auto;max-width:36ch}
+.math b{font-weight:600}
+.msg{color:var(--warn);font-size:15px;max-width:36ch;margin:12px auto 0}
+.cta{display:inline-block;margin-top:24px;padding:14px 32px;background:var(--ink);color:var(--paper);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;align-self:center}
+.cta:hover{opacity:.85}
+
+section.chart{margin-top:64px}
+h2{font-family:var(--sans);font-weight:500;font-size:20px;letter-spacing:.16em;text-transform:uppercase;text-align:center;margin:0 0 8px}
+.sub{text-align:center;color:var(--mute);font-size:14px;margin:0 auto 24px;max-width:60ch}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--ink)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:15px}
+th,td{text-align:center;padding:11px 6px;border-bottom:1px solid var(--line)}
+thead th{background:var(--ink);color:var(--paper);font-weight:500;letter-spacing:.1em;text-transform:uppercase;font-size:13px}
+thead tr.diff th{background:var(--soft);color:var(--mute);font-weight:400;letter-spacing:0;text-transform:none;font-size:12px;border-bottom:1px solid var(--ink)}
+tbody th{font-weight:600;border-right:1px solid var(--line)}
+tbody td.ub{color:var(--mute);border-right:1px solid var(--line)}
+tbody td.cell{cursor:pointer}
+tbody td.cell:hover{background:var(--soft)}
+tbody tr.row-on th,tbody tr.row-on td{background:var(--soft)}
+thead th.col-on{text-decoration:underline;text-underline-offset:4px}
+td.hit,tbody tr.row-on td.hit{background:var(--hl);color:var(--hl-ink);font-weight:600}
+.legend{font-size:13px;color:var(--mute);text-align:center;margin-top:12px}
+
+section.steps{margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink)}
+@media (max-width:780px){section.steps{grid-template-columns:1fr}}
+.step{padding:28px 24px 8px}
+.step h3{font-size:14px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px}
+.step p{margin:0;color:var(--mute);font-size:15px}
+.step svg{display:block;margin:0 auto 16px;width:120px;height:120px}
+
+footer{border-top:1px solid var(--line);text-align:center;padding:28px 16px;font-size:12px;letter-spacing:.08em;color:var(--mute)}
+@media (prefers-reduced-motion:reduce){.size.flash{animation:none}}
+</style>
+</head>
+<body>
+<div class="promo">Free shipping on all U.S. orders above $75</div>
+<header class="mast">
+  <a class="wordmark" href="https://lemystere.com/" target="_blank" rel="noopener"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAW0AAABmCAYAAAAAscBVAAAbvklEQVR42u2de7AcR3XGf7N79bJlS5aNbNkSuno4YGOwLVkC/JAxwZbulWQgetmEJBjLUFAQS5YNlVAVQJaBFEnKScC2JAOV8Aok/2BkyTapSgUCeQIhVUlRVAgBKphACC8nIOnubv7o05mzfXtmZ3dnnzpf1ZSu7t2d6ek+/fXXp0+fToCE8tHAYDAYDKWjGvw/sSoxGAyG4UXFqsBgMBgMBoPBYBgRmIvFYDAYegRzjxgMBoPBYDAYDL2AdmVcBMxhdkRJu3gaOGlV21dMFmznOvDdMWifVW1+/htmIoZxxH3SqRsdXjX5d61VZd/RTvv8cgkD8yBxdQe2aTCMDbRPe6YLA2/IvRrAKavWvuOEar96xuWV9h8DZ43wu/5SB3VjMIwtgU8AK4A7lEo5KYTgr5pS5HXgCWADcIFV4cDb7znA3QWU5zSjuQh9PnC6wPsdAJ6PRTIZxhyJdOSKIoAZIeZaQNz+ug84W74/IdNu6yiDx1bVdrHrCWmvUcPtakYRu+rAdkbb/WMwtE3ciSLwnaoz1CLX0kCxWWcZnnY8mkPadZxveNRwjPx1lyMmGgxnuupeSvNCVk25R+60DjLU7XdTDmE3gEdH7J02KgGRRdobzCYN445Ki47/A9JFLN0ZasB3pKNodW4YHnwz4/ee+F4LrByh97lV/n1Vzmd+bM1uMFKHh2n2GXqlcw3NPnAj7+FS2otaKO0GsH9E2uscVfY1OUp7ntmfwQD3ZJD2qghZG2kPD2mj2uuRDNKuAUtG4H224xYgHwHm5pD2XLM/w5mgpLuBbVwYDRwNyKyhyP0msYNhXkR+g5Tvo0LeWZixpjYYaRvGAd8H7ooMuA3gEwx3+N/VwBb5+YsthIKJCIORtmEsMAF8Rqlr3f5V4Gacq2QYcZ2UbTdut22e+8NcIwYjbcNYoIGLJjmYoUbfPIRlToDFwIMy6PzNEA8sBoORtqF00gaXh6OuFKn//WbgqiEs941S1iO47JEGg5G2VcEZhb8TAowR+usZLvdCA3id2OjHSPcEGAyGFsgL+UuwkL9hRBjyN6n+tpXs8L9LhugdniflmiGNv/Z7ArJC/ipmfwZT2oZxwwngqYjSrgBTQ2IXCfAiGVR+FbcAWSQ/tkWPGAymtMdOaVeAPczOve3V9vkMPgTwPFW+leqd/JWltM3+DKa0DWOJPxeCTiJkfzOD3aSSANfKz0eAbwdKupXSNrU9nCLiUlyWxsusOoy0De3jB7jc1LHO9Rpg/gAV61zc6TQN4CNGwmOBDcBXcZukfkfsy9BDmHtkNJUNZLtHAC6m+QQivSi5ZYAD+hWqHHrwSCKK2s6CHH6sYHYe/kOM5iEcprQNA233p4G3BoToie/lAxxsrpOfbyc9NT4xUu5pnfvInFXA6pLv/+KIqHsb6VmfJvRMaRsKKO2KmrbWyE6922+cR3qc2GSOTZnS7g38YnTZAuEq4LgMwrWIjZl4NKVtKIAq8PfAB4kfdPEK+pf5L5FnPZ/02LB/NzLuK85RA3jZA8FXgB3AtmAQ/lvgWWJ/xkU9VtqhejMMp9JuqFmR/ptOxXoDsw/H9T9f2oeZk+7ED4nS3h75e5GQP0PnuIb0wO5etS/ABcAB1WYfwG2eMtI20jbSbkHa/pqDO5095iLZ08fONKmevcRIeyD9vBeknWWfG4BPk56gZKRtpG2knUPaWm0nuK3tMdJu4DLt9WOdYpc8744WhG2kXT7WKMKe6YNtenuai9sXsBNbCzPSNtIuTNoA52aQdh14Gb33bfsjxE7ico4kRto9tw2Nd5IuQtYGVCYj7YKwKUl7RpV3jRo00T2DO2QgRnz7hFR7iRfJvx8C/nnECXgU7ESX4zbgtwZMnjbgGmn3jODyrlEkcN9Z6sCXgvI3lOtkXQ/fq4qLyW7gtjnnKcJxsJWQPCt9thtfjoXAfcDHTfGOFmxXUnFlMh+3u2sSt3i3APgfIbzviELUoUujph6+jnOF/V7kb6/GhWf1wt+5Apc3G+AvhcTLnqIvATbKvWcKktMXgB938KwrcbtNs/DXwE9IXVDa5aPtrQE8G1iKi7ioi939BPgPmR39F2m4ZlFsA9bitpNXSQ/F0PUxFRF3fwX8tIPn6QF4MXAh6Qae+dKHEuDLuLNM6yW2+7OkvX+Y8fcLZfBaDpyNO93pGfk3LHujjXf17edtuSE2uFq15ULg5/Kdf1BtWSV1TXaMM9GnrQ34BcDdpOlBa5FrBrcSvgsX7zos5c/zaceIax3x0L+GkF4vVNhuqcM7ac6HnediaNenvQI4Le9UK3DpzT3t4t6gn9Qj/aYaaatESHlDYG/1SFt4m2tIvV0VzFx0dFA1uPR3/cJjvcAMYXUX7p7rcX5z/+was9dOZnAhn1tLsKkNwP1y7xXB4LMaFxVVw62hnI5cfkH8eZEZSDs2MR+4FXggsK3wquP2JkxTUl6WM420fQNtAN4Xee97pXJ/ARfbulsZnZ/i36wU9yCmnJ2Stj/aK0YW+yjXP5sAZwFPyv0vL8EFkYVFQgabgceYffiD70wPyGem6TxqZqkQxb2KGB8R9XoLbtG3EnFRXo3LvqjLdj8ugdcW+e4WXKTFUVV2/9nDpBn0khzSvknus4U0zC+sx+ng2kYahlnUBuZLXR4P6tqHkl4vHHIjLm5bE/hxYH0HqnoX8KmgDj1PLcSFFvpyvF/67pS8327gYfV3P2juF49EtQ17qEr9Hlc24O+7B9iESzl8g/QrzR+P4PLvJN3wx5lE2ok07jsjhnxPjoq+GHh7UEd34TYNjJLSRgyqnqG2y27zjcpQ2+kUnUSP+HuvDYhKk/Z65TLs9BQcX697RbXNiMsEsYeJiGrbFZTndcRzgCSK5C9RalK309UZ7ayJ2xP6NNknAFVo9rcXrYsKLoTw00rF+xnObhmoYza4SkhO53afbvHchYGqbkQU7XJpVx8T/lAwuIX1uznCdwfFfVJkDXAN8Hhwjxm5b1j//v0vJ90r4etsKvI5I+1Ig12mDEcrzakWFVcRH7efAp6Wf9/BYBZ2uiHtCWXg4RR2R4llrJKeDj/d5ne7Dfk7kNHJXxdRwO2iIuRcUwq4Eql77WPW9XxbhFCSCIEmuAMrTqlBqC6df2GGKyMkgSlaL6q3a7+bIsraK+dK5Kqq+lkmtue/d1KUaZLjn69FXEd6ENuhfn9QBo1wFhKW55B857S63/4C7pHNkbo8LryixUAlMjBeJLNOrbqnzD2ST3JrVAfWRLWO5iRLeaFcCxTp+3vtGDHSDjuz7gAz4jYoAxcq41zUZ9KeVO8WKrOzVWfuZMCdkKmxv+eNynaqQb0vCnzXh8Wvnde59bWeeHrdqRw71SS1OcM90iluiJDmE9LWRWx2gjSVqy7P+qD/hesVW8lOxeCV67vEZTMRcRuFpH1clUFz3soChK2f/ZgMRHqtIWsgRWZXerA73YGbaOxJ21fcMmmocJFkE807B/OIzjfAOnUff63ps+LuhrQ9mdSIHwC8rYDiKAJ/0MGdHajaMjbXHAoGaa10K3QeWVUBHlWqd05gH7redwZ9a2/wmbzp8Vm48z5jm6LuIX8ht6JcAd2Strb72FrImjZtNsEt3tUDtbq4xXenM0i7jltnOjeDpMO62RAQp+4DWYuk6zJmppqwi5A2Yn/6mY/TwT6JcSbtCelUnrD1avodOQ1LC+I+EpD2B0ZIafvP3B74JP29TtD9CvdcRTidHD/VLWlXcYvI9YyBaX6OsiviYvMDwW0BmYf1fjToW7e2YW+ryU6r+3aKbQgrS2kvj5BcA7d42gmWBIp9Rga4vHo/P4O0a+Lnr0bIM9YnppToCt/nzZFnr41wYx230Eowa0tazIASmenVg7bdZaTd3JE2B4Ttw/cqwRS5iI9PN3wYQnbZCJE28p1aRkd4YZfl88rkSIffL2sb+yOBm8T/uzVSX0XxJnWvJTk+aUjDy3wZtrUx6zgn4hLwbbS/j6RdJY3K0Ar13V32y72Rci0oaO/aVj+U4WrKwvqg3+qF1G0Z/BgS9v4MF1dSkLzfFXHTLjDSTkf0x9XI6kl7ijSWtt3Y1ESpIE0Eu0aMtCFdsAunfY/Q3casd8m9Ng+QtCs0p6XVHfUxVTdFo0iSwK20P8MlkUfax9sg7QQXoRQj7dUFCWIL8djhdhAqft+PunUJbo346ze0cE/GSPuaDPLMw8EIaZ/AHdKhcTXxWPw1bRJ1ElH7/l7eRjYYaTvspnnFuSYkPof4BoiiuCLiL33nEJF2u4o4trjzvA7LtUTV+bkDJO1E3DRPZajtKwOV3OpeVeCV6t2uyFHZ4clCvm5P48LX5hQkF03cM+JDX1dgJkhJpF0hjZjSpH2Q7hZzUcSl7e+ODkh7Je1Hw5yH2+Dk2+ZR5Z/WeF+EsA/QvI7RCXRE0UwnAmdcSTvBhdiERru7w9FRX/cwOyphZgRJO3Qh6BjaAx0apQ/Tem0XRl1mlr/twXt54j5M6wVoFKHPEzVWkzpLgilyzE5ew+xNMnXcIuklbbjkzlXqrhtibLceFwf+X/8u6zq0NY85pIu5ulz7+kTavt2W4vZgxL5zQYYve30HfVWX61kiHOuBbezzXziTc48sJV0oaahGf6bDAel8qfDtwBsoN4fCIPFR4PURg36v/O27bd7vjVLXX2Hw+VmquHwnjUiHvgv4XeBrxPODoNRygvPz+7Cvj6p7kvOef6HqU+et+U25dgGfx+WlqGXcq4HLR/KTAdTfFcF7epwkDass0sZ+YLtEBqA3ySyAoH/O6WKQbxd14Hs5f9+Y8ftT5IcGZpVvDW4B/I10EZ897krbL8JoBTlDsYx+Ra5QaY+ie8RvFDlOPHfCnjbv9wKp42Ndvl9ZStu7wHYSj9s+EFHUIfwOR7/9/ynSRaNWfs0qzaFqWbkp3oLLLzKXckNHu1Xav87sSId6MGOZafMK90po5by7Q6XdCxzMUNo1iuVyybrqkVltk3vkTFXalYhPtiFTsk+V9Axt/D/HZY1rN2PYMKAOPCizkiRQVh8Tl8BPW7xTogyvisvxMAzwW7a/gPMnh0ruveImeSaYjWnM4LYh3yn/fxj4WUGV5xe4bhd1ToZy/W25Hgf+CJdx7+khqL8HI2V9Ky7jZTcqN7a9/GngHzPuN4j+9LbI734D+CfK35PxPeCLObO9M0JpV3G5hENlsE0pp26uQaNMn/aETFlrGSpiM8VOtlmkvruoy/crS2nrHYL7mB2vXac5PjhLbevkUEsKquzQXi6TGchMhoIL1dgh0jwjg1DalYzybSzZjtvpV/1U2rUMTiyDP7rmk3Ek7YTmcCJPSC8fVCUPMWl7orot0ilquJj2IjO26YjLYdCkrd9vkngK1DppqFesfc9Rn93fpZ2cJcLh8Zwpc7hx5GgX5N0NaS/KKNOKAc+c+kHaKzNIu5c7n//fbsb15BofZrUKF0d6TsZ0vRH8/1TJFTwO8NP1z0emohUhmSsLzGzeLN/97JDOvL4lroeYmrwh57tbSBcjnyrY9lnk+L+itneQpjWN2ZPOxrcXl0T/HppPse81smZL8xl/ZLXvj3qgss+Y1Kz+RX3i+9WRzhjmnKhJRzGlHb/fHNK8x6G6OtLi3s+Rzz9WUv2UqbQT5d7ZGFGefuF0QaSd55GGjR6JTOm7RQW3OeTuQEHWM35+EhfRUVSMdaO012bYwsoB2n2/lPZkhtK+mCE5wnFUSXuxcnvMy1Da4VTzFsYDvSBtnUwnVnfLc777etI1g0qJnbOs7HQ6nOww8RX92KaVTaRZ+m4O6rfswXtZ4KKKuU38tazg87sh7YsySHvtAIVLv0j72RmkvbwfpD2u7pEG6eaECvGNLQ8w+xDbBRjyOsMXcT5UAldJAxcBUcmYRj8s9fsFhjN+3Q88AJ+UGVpI6ntVn/F28ytC9g1cREcSiIIy8TTwCVyu7Clc1Ilfm6kFz/tAH2z5P89g98hPM34/hz5EsoyzT/sSMeiHI0TRwG1YCL+zFDuNOg914COR31eB9xD3qW4i3SX63wyvv993ts8Bn4l0vruA5yoVtwq3q9Nn8/tZHzpsA3cQ7pO4jIB7pO4naI5UuYX2D5YoC8vHmFc8sg58vrgfDx/Xyq2SpsX8ehtKYYeRdkt8GRfdEMacV3DnDxIo0lsVGY4CasDvRwh4gjS8sQK8VP5tqHfrl+34mc+f4vzwxyL2/0k6yMPcJt4TmVVczmjtQ+gUsQyVa4elcKPo075QlfnOjM9cTdwHdv6YzDR05+7Wpx1iG/GE93VFFFVc7LHPwd3JeYOtSKssn3ZYN4vJ3iE7KS4K/75vIfWHt/t+L8Dt8vMHCXeKy4nHcrfKDNeNT9snnAp3cj7O+Pu0K8CrIpx4uB/vPq5K+yXq56ydY/9Gc8ifb/TLMbTC54TQQrVdB35R/bxJfn4wQgbDPKP5kZBpNUIKG0lDABNc/pAZ2j8sYR9uh9+fCNF9HLe41wn+BXh15Pe9DgGM5Z2ZJk3SNK5o4HLShNiLc7Ga0u4A+nDe6RbTu1BlPDSGSnuyZLJMcP7UmLI5LJ85S/1uMeWGRvZKaWu1vIL40VU10mx+hyPfK/Ju25SKr6mfn+hCSMUORWgVDdWt0j4rorRruEXp6gDsvl9K22dWDMMwa8ArhkGUZJH2qiElrGma8yKvyiG1K4kfqTVZcqVf3Oc6CBPorMwgl27wbOIJbnzieX/AwL2UH8PeS9L2daTj0mP27+P69ay16IEJ4UkvOnysU1upREj7ZT0kbY/dxOPG5wX21i3ObcMu+kHaFZoTjfnrGM3H1XWLuQQbmSoFO/8ouFYSnC/7mCpblhH6330FFx5Vp3lB5c4SSeBC4NuofLh9VB2t1HU3HepbitRCN8krcD6/mrgPyibUfmAGt3szyajXhHR3Z5JR7+2+00wJ/UqXb24f6umJoK95m5ouqb0SEQE/ZHARMVn1/JT8XA9E40tLfM5NuKirwocgTOQojWHbiHI2Lvl8mJT9rBbqZF2gMvxmiZeURBD7pDz9JO2E5nzG1+VM4ztVwQluMfc08SRHfgGy7Gny8hylfWHJz/KHNIfukdhhGZU26nAPs/Ob+PrqRpGF5byqD0ob3MaimJtkDd2dXuPdbCfEzra2uFc/E0b5cuyKzNb1SezdYCFpWuTCpD2P7B1YW4aMtMP8tnrDRCvcxuycxk+UUPHXqenvhX2siwQXU+zfaaogabe7Td+T2mnip1dv78G7XZ5D2mt68LxNxM9hXBrUZzukfU0GaT/a5n00NgaEdYLZO4F7RdoLcKljQzfZu2Uw6Wbg3qn647wOSLvXbtz5uDNPw12pZeTP30u6djK3aMdfT/aW2UHlRA7PuVtAPCF5Q5R30cFJn4Cs/VOdhgDqTjSIWclO1XYHc+qx29wqm0iT3Rfd2t6N8t2dQ9p7elSXjwf2dQ/NBz+3OuE79h6HmZ3uto7z3bZL2lXg/YHtFxFVN1Le2sB5Qqy1Eonb2/BpGaxj9qftMkbaq3vcz/yJO08GiruGO+9zosNB+DZlH5e2M906SvaJCnXg+gET96QqYyx95YE2jH4e8A6p+FM0nxW4lHRTRaWAO0EfmHrfAOrnIppjjGdE3SUF6rRd4p4nnTV0Sx0s2TXi1yxOkn/qx/Ie1OetgY1dHXTaTtTxBZHBwOfJ1nZZaTFoJjJF1/c4UlCZXZKhtBcFLoCi7XOxPDsk7oO46JZKG9yjRceWgm68vDMie03cy0TkhamL30p+6mL9ThVxB+1VhF14trqY5hXurHy+J8T360eTOfRnoegKKd8M8YQ5rTbWtBrhZmjeXHEaF6Y1X3XSSoTErwDeTuoXv5vOz7XrxL9WFRfBH0qZdUc8Dlxb8vO8od0Sqf91Jb6ff68j5B/VdFoG8bKJ+yLVDx4JZnrdLOauxGU+DP3Be0lzeOdhmZC8rvv7xRdatB1PROrxxcGAdB7N2RCz2mhCZr4HIu7G47jNPnnix68xabG4g2JrL0sySPt6+hM0URV+OBSpz2My0OcFdSwAXiSfLUTYFSGcaeDXmL0bLIsY/TTgqHx3StRv2dcWXPjS/mA0q7Ug7U5Xm9fICFkLnjEjCmCLdLiV8vMu8UfOqIFkaxf+yXZxI24x6CDxk04aqmxHcIsaU3S+SBR+Z6Hya9dEQZZxnuG1Us5DkbZuddbeO2SgvamE+l2nbG57CaTtvzNXZir3Bu/n63GPEOgKEVIrpD9sy3AJ7izgxw7LcVmk7h4T995q0kXTawu8a0Vsao7M7I4GxF0T8t4qbrVJ3LF/UzJQPabK8ETgEsmr6wtw51XGSPshecd+CCdP3P7dTwWD8afl3a+Vun2ucNRraT744niRMk+0UK6jdnVL2r4R1gohnyCeijF85nGZSvd7V1SnBw+v6oJYk8B+dqsZxq6SlHxZhyx3W44jqo0vyJnedkLcfmBfJqR7rA379ja3UwiwU0W5Xggl63k7M9xoRdTneuAOJbZaHWR7WERIK/cd0r9/rq6TYoOniR8SfE+PZ7phNNFGXFriopx1VGYj55CT9kFPq6eEpEZ9a3tDEcmHcYdihn/L+n8elkrH8H7Vs8VQwJ048q/Adzq4bxnY16Eq+DDZKTbbvd8k8EpRWR/EZVHs5mCCBHhTSfXzB12U4yrcyTCJDEx/ljPAlFGPFVHUl4hb4jmRz30T+D7wDVyahpkSnr9YpufPJU1n/DXgS9KHkgJ9rtW7rRJX0xIh1kW4+GufdfPbwA9azOr0M68kzWOe91w/0/wqaVx5L0g7TxRfLG67RTKwnIdLlzAHlw7gm/LulaBOz4TkW4YBo8pgtjD3ckD0pLiK/MN6y+j8w3gy0iDKNWynQZVRP6N0+pXBMJLQW/X30Xn41qgjGfB1ptVPS9luMBjiHXGL+vmzzD4h5kxBowOXQK+eOyr1YzAY+oxFSmUfZfxPYxkmtWkwGAxtE9Au0giHG61KDAaDYXixEJfBTSe9MqVtMBgMQ4pbSMPEfKy/kbbBYDAMIebikv/4jSsLGK8QRoPBYBgrXMPsnYC2OGYwGAxDiAlcsi1P2udZlRgMBsPw4oWKsPeYwjYYDIbhxmHSpGnnW3UYDAbD8OIqIetTuORpprINBoNhSJHgjs/zcdlzrUoMBoNhOMka3I5Hf8jFzVYtBoPBMLyYj9v96E/1sZhsg8FgGFJUcMc/+cRQ66xKDAaDYXixmtQtcsCqw2AwGIYXc0lPzq7hDjwwGAwGw4AwjTustgbchvNdQ5qzeYci7GmrLoPBYBgcbhdCPkV6vuMhIW5N2A3gfqsug8FgGAwSYBnOT+0XF+uKoI/jTuP2vz8GnEt6WK/BYDAY+kzamxVJZ12eyCeNsA0Gg2GwpL1KKems6yngUiNsg8FgGDxpzwHuJj05XV81+Zu5RAwGg2FISLsixH0HbhHSL0R+ENgonzPCNhgMhiEhbX3Nxfmt5wckbYRtGGkjNxjGjbQ9Ghmfa1hVGUYV/weLk6AD7q2m1QAAAABJRU5ErkJggg==" alt="Le Mystère"></a>
+  <nav class="crumb">Find your fit &nbsp;/&nbsp; Fit calculator</nav>
+</header>
+<div class="stripes" aria-hidden="true"></div>
+
+<main>
+  <h1>Fit Calculator</h1>
+  <p class="lede">Enter two measurements in inches, taken with a soft tape while wearing a non-padded bra. Your size updates as you type.</p>
+
+  <div class="calc">
+    <div class="inputs">
+      <div class="field">
+        <label for="under">Underbust (band)</label>
+        <p>Around your ribcage, directly under the bust. Snug, flat across the back and parallel to the floor.</p>
+        <div class="entry">
+          <button type="button" data-t="under" data-d="-0.5" aria-label="Decrease underbust by half an inch">−</button>
+          <input id="under" type="number" inputmode="decimal" step="0.25" min="20" max="60" value="34" aria-describedby="under-r">
+          <button type="button" data-t="under" data-d="0.5" aria-label="Increase underbust by half an inch">+</button>
+        </div>
+        <div class="rounded" id="under-r" aria-live="polite"></div>
+      </div>
+      <div class="field">
+        <label for="over">Overbust (cup)</label>
+        <p>Around the fullest part of the bust, arms at your sides. Just snug enough to stay in place without compressing.</p>
+        <div class="entry">
+          <button type="button" data-t="over" data-d="-0.5" aria-label="Decrease overbust by half an inch">−</button>
+          <input id="over" type="number" inputmode="decimal" step="0.25" min="20" max="70" value="37" aria-describedby="over-r">
+          <button type="button" data-t="over" data-d="0.5" aria-label="Increase overbust by half an inch">+</button>
+        </div>
+        <div class="rounded" id="over-r" aria-live="polite"></div>
+      </div>
+      <p class="tip">Band rounds to the nearest even inch (an exact odd number rounds up). Overbust rounds to the nearest whole inch. Each inch of difference is one cup size.</p>
+    </div>
+
+    <div class="result" aria-live="polite">
+      <div class="label">Your size</div>
+      <div class="size" id="size">34C</div>
+      <p class="math" id="math"></p>
+      <p class="msg" id="msg" hidden></p>
+      <a class="cta" id="cta" href="https://lemystere.com/collections/bras-sc/" target="_blank" rel="noopener">Shop bras</a>
+    </div>
+  </div>
+
+  <section class="chart" aria-labelledby="chart-h">
+    <h2 id="chart-h">Size Chart</h2>
+    <p class="sub">Cup columns show the overbust measurement, in inches, for each size. Overbust = band + cup difference. Tap any size to load it into the calculator.</p>
+    <div class="scroll"><table id="chart"></table></div>
+    <p class="legend">Bands 30–46, cups A–I. All measurements in inches.</p>
+  </section>
+
+  <section class="steps" aria-label="How to measure">
+    <div class="step">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M38 14c-6 20-8 38-6 58 2 18 4 30 4 40M82 14c6 20 8 38 6 58-2 18-4 30-4 40" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M33 52c8 10 20 10 27 4 7 6 19 6 27-4" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="26" y1="64" x2="94" y2="64" stroke="currentColor" stroke-width="3"/></svg>
+      <h3>Get ready</h3>
+      <p>Remove your top and wear your best-fitting, non-padded bra. Stand upright with shoulders relaxed.</p>
+    </div>
+    <div class="step">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M38 14c-6 20-8 38-6 58 2 18 4 30 4 40M82 14c6 20 8 38 6 58-2 18-4 30-4 40" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M33 52c8 10 20 10 27 4 7 6 19 6 27-4" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="26" y1="64" x2="94" y2="64" stroke="currentColor" stroke-width="3"/><text x="60" y="80" text-anchor="middle" font-family="Jost, sans-serif" font-size="10" fill="currentColor">BAND</text></svg>
+      <h3>Measure your band</h3>
+      <p>Tape directly under the bust, snug and level. Round to the nearest even number.</p>
+    </div>
+    <div class="step">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M38 14c-6 20-8 38-6 58 2 18 4 30 4 40M82 14c6 20 8 38 6 58-2 18-4 30-4 40" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M33 52c8 10 20 10 27 4 7 6 19 6 27-4" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="24" y1="48" x2="96" y2="48" stroke="currentColor" stroke-width="3"/><text x="60" y="40" text-anchor="middle" font-family="Jost, sans-serif" font-size="10" fill="currentColor">CUP</text></svg>
+      <h3>Measure your cup</h3>
+      <p>Tape across the fullest part of the bust without pulling snug. Round to the nearest full inch.</p>
+    </div>
+  </section>
+</main>
+
+<footer>© 2026 Le Mystère, a Komar brand. Measurements are a starting point; fit varies by style.</footer>
+
+<script>
+(function(){
+  // Source: Bra_Size_Chart_30-46_A-I.xlsx — overbust = band + cup difference
+  var BANDS=[30,32,34,36,38,40,42,44,46];
+  var CUPS=["A","B","C","D","DD/E","DDD/F","G","H","I"]; // difference 1..9
+
+  function bandFrom(u){ return Math.floor(u/2+0.5)*2; }   // nearest even; exact odd rounds up
+  function wholeFrom(o){ return Math.floor(o+0.5); }      // nearest whole; .5 rounds up
+  function fmt(n){ return (Math.round(n*100)/100).toString(); }
+
+  function calc(u,o){
+    var band=bandFrom(u), over=wholeFrom(o), diff=over-band;
+    var r={band:band,over:over,diff:diff,size:null,error:null};
+    if(band<30||band>46){ r.error="Band "+band+" is outside this chart (30–46). Book a virtual fitting for help with your size."; return r; }
+    if(diff<1){ r.error="Your overbust needs to be at least 1 inch more than your band. Re-measure the fullest part of the bust without compressing."; return r; }
+    if(diff>9){ r.error="A "+diff+"-inch difference is beyond cup I on this chart. Book a virtual fitting for help with your size."; return r; }
+    r.cup=CUPS[diff-1]; r.size=band+r.cup; return r;
+  }
+  window.__calc=calc; // exposed for testing
+
+  var $=function(id){return document.getElementById(id)};
+  var under=$("under"), over=$("over");
+
+  // Build chart
+  var t=$("chart"), h='<thead><tr><th scope="col">Band</th><th scope="col">Underbust</th>';
+  CUPS.forEach(function(c,i){h+='<th scope="col" data-c="'+i+'">'+c+'</th>';});
+  h+='</tr><tr class="diff"><th scope="row">Cup diff.</th><th></th>';
+  CUPS.forEach(function(c,i){h+='<th>+'+(i+1)+'"</th>';});
+  h+='</tr></thead><tbody>';
+  BANDS.forEach(function(b){
+    h+='<tr data-b="'+b+'"><th scope="row">'+b+'</th><td class="ub">'+b+'</td>';
+    CUPS.forEach(function(c,i){h+='<td class="cell" tabindex="0" role="button" aria-label="Size '+b+c+', overbust '+(b+i+1)+' inches" data-b="'+b+'" data-i="'+i+'">'+(b+i+1)+'</td>';});
+    h+='</tr>';
+  });
+  t.innerHTML=h+'</tbody>';
+
+  var last="";
+  function render(){
+    var u=parseFloat(under.value), o=parseFloat(over.value);
+    var sizeEl=$("size"), math=$("math"), msg=$("msg"), cta=$("cta");
+    document.querySelectorAll(".hit,.row-on,.col-on").forEach(function(e){e.classList.remove("hit","row-on","col-on");});
+    if(isNaN(u)||isNaN(o)||u<=0||o<=0){
+      $("under-r").textContent=""; $("over-r").textContent="";
+      sizeEl.textContent="—"; math.textContent=""; msg.hidden=false; msg.textContent="Enter both measurements in inches."; cta.hidden=true; return;
+    }
+    var r=calc(u,o);
+    $("under-r").textContent=fmt(u)+'" rounds to band '+r.band;
+    $("over-r").textContent=fmt(o)+'" rounds to '+r.over+'"';
+    math.innerHTML=r.over+' − '+r.band+' = <b>'+r.diff+' inch'+(Math.abs(r.diff)===1?'':'es')+'</b>'+(r.size?' difference, a <b>'+r.cup+'</b> cup on a <b>'+r.band+'</b> band.':' difference.');
+    if(r.error){ sizeEl.textContent="—"; msg.hidden=false; msg.textContent=r.error; cta.textContent="Book a virtual fitting"; cta.href="https://lemystere.com/pages/schedule-a-fitting"; cta.hidden=false; }
+    else{
+      msg.hidden=true;
+      if(sizeEl.textContent!==r.size){ sizeEl.textContent=r.size; if(last){sizeEl.classList.remove("flash"); void sizeEl.offsetWidth; sizeEl.classList.add("flash");} }
+      cta.textContent="Shop "+r.size+" bras"; cta.href="https://lemystere.com/collections/bras-sc/"; cta.hidden=false;
+      var row=t.querySelector('tr[data-b="'+r.band+'"]'); row.classList.add("row-on");
+      row.querySelector('td[data-i="'+(r.diff-1)+'"]').classList.add("hit");
+      t.querySelector('th[data-c="'+(r.diff-1)+'"]').classList.add("col-on");
+    }
+    last=r.size||"x";
+  }
+
+  under.addEventListener("input",render); over.addEventListener("input",render);
+  document.querySelectorAll(".entry button").forEach(function(b){
+    b.addEventListener("click",function(){
+      var inp=$(b.dataset.t), v=parseFloat(inp.value); if(isNaN(v)) v=b.dataset.t==="under"?34:37;
+      inp.value=Math.max(0,v+parseFloat(b.dataset.d)); render();
+    });
+  });
+  function pick(cell){ var b=+cell.dataset.b, i=+cell.dataset.i; under.value=b; over.value=b+i+1; render(); document.querySelector(".calc").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"}); }
+  t.addEventListener("click",function(e){var c=e.target.closest("td.cell"); if(c) pick(c);});
+  t.addEventListener("keydown",function(e){var c=e.target.closest("td.cell"); if(c&&(e.key==="Enter"||e.key===" ")){e.preventDefault();pick(c);}});
+  render();
+})();
+</script>
+</body>
+</html>
