@@ -9,16 +9,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#000000; --paper:#ffffff; --mute:#6b6b6b; --line:#d9d9d9; --soft:#f5f5f5; --hl:#000000; --hl-ink:#ffffff; --warn:#8a1c1c;
+  --ink:#000000; --paper:#ffffff; --mute:#6b6b6b; --line:#d9d9d9; --soft:#f5f5f5; --hl:#000000; --hl-ink:#ffffff; --warn:#8a1c1c; --panel:#f6f6f6;
   --serif:"Cormorant Garamond", "Didot", "Bodoni 72", Georgia, serif;
   --sans:"Jost", "Futura", "Helvetica Neue", Arial, sans-serif;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){ --ink:#ffffff; --paper:#000000; --mute:#a3a3a3; --line:#333333; --soft:#141414; --hl:#ffffff; --hl-ink:#000000; --warn:#ff9a9a; }
+  :root:not([data-theme="light"]){ --ink:#ffffff; --paper:#000000; --mute:#a3a3a3; --line:#333333; --soft:#141414; --hl:#ffffff; --hl-ink:#000000; --warn:#ff9a9a; --panel:#0e0e0e; }
 }
-:root[data-theme="dark"]{ --ink:#ffffff; --paper:#000000; --mute:#a3a3a3; --line:#333333; --soft:#141414; --hl:#ffffff; --hl-ink:#000000; --warn:#ff9a9a; }
+:root[data-theme="dark"]{ --ink:#ffffff; --paper:#000000; --mute:#a3a3a3; --line:#333333; --soft:#141414; --hl:#ffffff; --hl-ink:#000000; --warn:#ff9a9a; --panel:#0e0e0e; }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
@@ -84,12 +84,13 @@ thead th.col-on{text-decoration:underline;text-underline-offset:4px}
 td.hit,tbody tr.row-on td.hit{background:var(--hl);color:var(--hl-ink);font-weight:600}
 .legend{font-size:13px;color:var(--mute);text-align:center;margin-top:12px}
 
-section.steps{margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink)}
-@media (max-width:780px){section.steps{grid-template-columns:1fr}}
-.step{padding:28px 24px 8px}
-.step h3{font-size:14px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px}
-.step p{margin:0;color:var(--mute);font-size:15px}
-.step svg{display:block;margin:0 auto 16px;width:120px;height:120px}
+section.steps{margin-top:72px;background:var(--panel);padding:56px clamp(20px,5vw,64px) 36px}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px clamp(24px,4vw,56px)}
+@media (max-width:780px){.steps-grid{grid-template-columns:1fr;max-width:340px;margin:0 auto}}
+.step svg{display:block;width:100%;max-width:160px;height:auto;margin:0 auto 22px;color:var(--ink)}
+.step h3{font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px}
+.step p{margin:0;color:var(--mute);font-size:14px;line-height:1.65;max-width:34ch}
+.steps-note{text-align:center;font-size:12px;color:var(--mute);margin:44px 0 0}
 
 footer{border-top:1px solid var(--line);text-align:center;padding:28px 16px;font-size:12px;letter-spacing:.08em;color:var(--mute)}
 @media (prefers-reduced-motion:reduce){.size.flash{animation:none}}
@@ -149,25 +150,25 @@ footer{border-top:1px solid var(--line);text-align:center;padding:28px 16px;font
   </section>
 
   <section class="steps" aria-label="How to measure">
-    <div class="step">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M38 14c-6 20-8 38-6 58 2 18 4 30 4 40M82 14c6 20 8 38 6 58-2 18-4 30-4 40" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M33 52c8 10 20 10 27 4 7 6 19 6 27-4" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="26" y1="64" x2="94" y2="64" stroke="currentColor" stroke-width="3"/></svg>
-      <h3>Get ready</h3>
-      <p>Remove your top and wear your best-fitting, non-padded bra. Stand upright with shoulders relaxed.</p>
+    <div class="steps-grid">
+      <div class="step"><svg viewBox="40 30 504 510" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="M246 42 C244 78 226 96 186 108"/><path d="M186 108 C140 112 108 126 95 165 C82 205 84 280 82 335 C80 405 66 462 52 528"/><path d="M163 350 C160 415 142 470 124 528"/><path d="M184 368 C186 430 172 482 157 528"/><path d="M181 112 L172 222"/><path d="M192 110 L185 218"/><path d="M172 220 C212 244 254 262 292 302"/><path d="M160 236 C148 262 150 300 160 322 C166 334 175 340 184 344"/><path d="M160 322 C200 345 255 342 292 302"/><path d="M170 346 C230 352 260 352 292 350"/><path d="M174 360 C230 366 260 366 292 364"/><path d="M 338.0 42 C 340.0 78 358.0 96 398.0 108"/><path d="M 398.0 108 C 444.0 112 476.0 126 489.0 165 C 502.0 205 500.0 280 502.0 335 C 504.0 405 518.0 462 532.0 528"/><path d="M 421.0 350 C 424.0 415 442.0 470 460.0 528"/><path d="M 400.0 368 C 398.0 430 412.0 482 427.0 528"/><path d="M 403.0 112 L 412.0 222"/><path d="M 392.0 110 L 399.0 218"/><path d="M 412.0 220 C 372.0 244 330.0 262 292.0 302"/><path d="M 424.0 236 C 436.0 262 434.0 300 424.0 322 C 418.0 334 409.0 340 400.0 344"/><path d="M 424.0 322 C 384.0 345 329.0 342 292.0 302"/><path d="M 414.0 346 C 354.0 352 324.0 352 292.0 350"/><path d="M 410.0 360 C 354.0 366 324.0 366 292.0 364"/><circle cx="292" cy="498" r="3" fill="currentColor" stroke="none"/></g></svg>
+        <h3>Get ready</h3>
+        <p>Remove your top and wear your best-fitting, non-padded bra. Stand upright with shoulders relaxed.</p>
+      </div>
+      <div class="step"><svg viewBox="40 30 504 510" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="M246 42 C244 78 226 96 186 108"/><path d="M186 108 C140 112 108 126 95 165 C82 205 84 280 82 335 C80 405 66 462 52 528"/><path d="M163 350 C160 415 142 470 124 528"/><path d="M184 368 C186 430 172 482 157 528"/><path d="M181 112 L172 222"/><path d="M192 110 L185 218"/><path d="M172 220 C212 244 254 262 292 302"/><path d="M160 236 C148 262 150 300 160 322 C166 334 175 340 184 344"/><path d="M160 322 C200 345 255 342 292 302"/><path d="M170 346 C230 352 260 352 292 350"/><path d="M174 360 C230 366 260 366 292 364"/><path d="M 338.0 42 C 340.0 78 358.0 96 398.0 108"/><path d="M 398.0 108 C 444.0 112 476.0 126 489.0 165 C 502.0 205 500.0 280 502.0 335 C 504.0 405 518.0 462 532.0 528"/><path d="M 421.0 350 C 424.0 415 442.0 470 460.0 528"/><path d="M 400.0 368 C 398.0 430 412.0 482 427.0 528"/><path d="M 403.0 112 L 412.0 222"/><path d="M 392.0 110 L 399.0 218"/><path d="M 412.0 220 C 372.0 244 330.0 262 292.0 302"/><path d="M 424.0 236 C 436.0 262 434.0 300 424.0 322 C 418.0 334 409.0 340 400.0 344"/><path d="M 424.0 322 C 384.0 345 329.0 342 292.0 302"/><path d="M 414.0 346 C 354.0 352 324.0 352 292.0 350"/><path d="M 410.0 360 C 354.0 366 324.0 366 292.0 364"/><circle cx="292" cy="498" r="3" fill="currentColor" stroke="none"/><path d="M164 344 C230 352 360 352 420 344 L424 372 C360 380 230 380 160 372 Z" fill="var(--panel)"/><path stroke-width="2.4" d="M176 346.8 L176 359.8 M189 347.9 L189 354.9 M202 348.8 L202 355.8 M215 349.6 L215 356.6 M228 350.2 L228 363.2 M241 350.7 L241 357.7 M254 351.0 L254 358.0 M267 351.3 L267 358.3 M280 351.4 L280 364.4 M293 351.5 L293 358.5 M306 351.5 L306 358.5 M319 351.3 L319 358.3 M332 351.1 L332 364.1 M345 350.7 L345 357.7 M358 350.3 L358 357.3 M371 349.7 L371 356.7 M384 348.9 L384 361.9 M397 347.9 L397 354.9 M410 346.7 L410 353.7"/><text x="292" y="438" font-family="Jost, sans-serif" font-size="30" font-weight="500" letter-spacing="3" fill="currentColor" stroke="none" text-anchor="middle">BAND</text></g></svg>
+        <h3>Measure your band</h3>
+        <p>Tape directly under the bust, snug and level. Round to the nearest even number.</p>
+      </div>
+      <div class="step"><svg viewBox="40 30 504 510" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="M246 42 C244 78 226 96 186 108"/><path d="M186 108 C140 112 108 126 95 165 C82 205 84 280 82 335 C80 405 66 462 52 528"/><path d="M163 350 C160 415 142 470 124 528"/><path d="M184 368 C186 430 172 482 157 528"/><path d="M181 112 L172 222"/><path d="M192 110 L185 218"/><path d="M172 220 C212 244 254 262 292 302"/><path d="M160 236 C148 262 150 300 160 322 C166 334 175 340 184 344"/><path d="M160 322 C200 345 255 342 292 302"/><path d="M170 346 C230 352 260 352 292 350"/><path d="M174 360 C230 366 260 366 292 364"/><path d="M 338.0 42 C 340.0 78 358.0 96 398.0 108"/><path d="M 398.0 108 C 444.0 112 476.0 126 489.0 165 C 502.0 205 500.0 280 502.0 335 C 504.0 405 518.0 462 532.0 528"/><path d="M 421.0 350 C 424.0 415 442.0 470 460.0 528"/><path d="M 400.0 368 C 398.0 430 412.0 482 427.0 528"/><path d="M 403.0 112 L 412.0 222"/><path d="M 392.0 110 L 399.0 218"/><path d="M 412.0 220 C 372.0 244 330.0 262 292.0 302"/><path d="M 424.0 236 C 436.0 262 434.0 300 424.0 322 C 418.0 334 409.0 340 400.0 344"/><path d="M 424.0 322 C 384.0 345 329.0 342 292.0 302"/><path d="M 414.0 346 C 354.0 352 324.0 352 292.0 350"/><path d="M 410.0 360 C 354.0 366 324.0 366 292.0 364"/><circle cx="292" cy="498" r="3" fill="currentColor" stroke="none"/><path d="M140 268 C230 262 360 262 444 268 L444 292 C360 286 230 286 140 292 Z" fill="var(--panel)"/><path stroke-width="2.4" d="M152 268.8 L152 279.8 M165 268.0 L165 274.0 M178 267.4 L178 273.4 M191 266.9 L191 272.9 M204 266.4 L204 277.4 M217 266.0 L217 272.0 M230 265.7 L230 271.7 M243 265.4 L243 271.4 M256 265.2 L256 276.2 M269 265.1 L269 271.1 M282 265.0 L282 271.0 M295 265.0 L295 271.0 M308 265.0 L308 276.0 M321 265.1 L321 271.1 M334 265.3 L334 271.3 M347 265.5 L347 271.5 M360 265.8 L360 276.8 M373 266.1 L373 272.1 M386 266.5 L386 272.5 M399 267.0 L399 273.0 M412 267.6 L412 278.6 M425 268.3 L425 274.3"/><text x="292" y="222" font-family="Jost, sans-serif" font-size="30" font-weight="500" letter-spacing="3" fill="currentColor" stroke="none" text-anchor="middle">CUP</text></g></svg>
+        <h3>Measure your cup</h3>
+        <p>Tape across the fullest part of the bust without pulling snug. Round to the nearest full inch.</p>
+      </div>
     </div>
-    <div class="step">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M38 14c-6 20-8 38-6 58 2 18 4 30 4 40M82 14c6 20 8 38 6 58-2 18-4 30-4 40" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M33 52c8 10 20 10 27 4 7 6 19 6 27-4" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="26" y1="64" x2="94" y2="64" stroke="currentColor" stroke-width="3"/><text x="60" y="80" text-anchor="middle" font-family="Jost, sans-serif" font-size="10" fill="currentColor">BAND</text></svg>
-      <h3>Measure your band</h3>
-      <p>Tape directly under the bust, snug and level. Round to the nearest even number.</p>
-    </div>
-    <div class="step">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M38 14c-6 20-8 38-6 58 2 18 4 30 4 40M82 14c6 20 8 38 6 58-2 18-4 30-4 40" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M33 52c8 10 20 10 27 4 7 6 19 6 27-4" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="24" y1="48" x2="96" y2="48" stroke="currentColor" stroke-width="3"/><text x="60" y="40" text-anchor="middle" font-family="Jost, sans-serif" font-size="10" fill="currentColor">CUP</text></svg>
-      <h3>Measure your cup</h3>
-      <p>Tape across the fullest part of the bust without pulling snug. Round to the nearest full inch.</p>
-    </div>
+    <p class="steps-note">Measurements are a starting point; fit varies by style.</p>
   </section>
 </main>
 
-<footer>© 2026 Le Mystère, a Komar brand. Measurements are a starting point; fit varies by style.</footer>
+<footer>© 2026 Le Mystère, a Komar brand.</footer>
 
 <script>
 (function(){
