@@ -84,16 +84,22 @@ thead th.col-on{text-decoration:underline;text-underline-offset:4px}
 td.hit,tbody tr.row-on td.hit{background:var(--hl);color:var(--hl-ink);font-weight:600}
 .legend{font-size:13px;color:var(--mute);text-align:center;margin-top:12px}
 
-section.steps{margin-top:72px;background:var(--panel);padding:56px clamp(20px,5vw,64px) 36px}
-.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px clamp(24px,4vw,56px)}
-@media (max-width:780px){.steps-grid{grid-template-columns:1fr;max-width:340px;margin:0 auto}}
-.step svg{display:block;width:100%;max-width:160px;height:auto;margin:0 auto 22px;color:var(--ink)}
-.step h3{font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px}
-.step p{margin:0;color:var(--mute);font-size:14px;line-height:1.65;max-width:34ch}
-.steps-note{text-align:center;font-size:12px;color:var(--mute);margin:44px 0 0}
+
 
 footer{border-top:1px solid var(--line);text-align:center;padding:28px 16px;font-size:12px;letter-spacing:.08em;color:var(--mute)}
 @media (prefers-reduced-motion:reduce){.size.flash{animation:none}}
+.live{background:var(--panel);margin:-36px -32px 32px;padding:28px 32px 20px;border-bottom:1px solid var(--line);text-align:center}
+.figs{position:relative;width:190px;max-width:100%;aspect-ratio:504/510;margin:0 auto}
+.fig{position:absolute;inset:0;opacity:0;transition:opacity .35s ease}
+.fig.on{opacity:1}
+.fig svg{width:100%;height:100%;display:block;color:var(--ink)}
+.live-copy{min-height:96px;margin-top:14px}
+.live-copy h3{font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 6px}
+.live-copy p{margin:0 auto;color:var(--mute);font-size:14px;max-width:38ch}
+.tabs{display:flex;justify-content:center;gap:4px;margin-top:10px}
+.tabs button{background:none;border:0;border-bottom:1px solid transparent;color:var(--mute);font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.fig{transition:none}}
 </style>
 </head>
 <body>
@@ -108,8 +114,14 @@ footer{border-top:1px solid var(--line);text-align:center;padding:28px 16px;font
   <h1>Fit Calculator</h1>
   <p class="lede">Enter two measurements in inches, taken with a soft tape while wearing a non-padded bra. Your size updates as you type.</p>
 
+
   <div class="calc">
     <div class="inputs">
+      <div class="live">
+        <div class="figs" aria-hidden="true"><div class="fig on" data-s="ready"><svg viewBox="40 30 504 510" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="M246 42 C244 78 226 96 186 108"/><path d="M186 108 C140 112 108 126 95 165 C82 205 84 280 82 335 C80 405 66 462 52 528"/><path d="M160 322 C165 336 166 360 164 400 C162 450 143 490 124 528"/><path d="M178 333 C186 340 188 362 187 400 C186 450 172 490 157 528"/><path d="M181 112 L172 222"/><path d="M192 110 L185 218"/><path d="M172 220 C212 244 254 262 292 302"/><path d="M160 236 C148 262 150 300 160 322"/><path d="M160 322 C200 345 255 342 292 302"/><path d="M 338.0 42 C 340.0 78 358.0 96 398.0 108"/><path d="M 398.0 108 C 444.0 112 476.0 126 489.0 165 C 502.0 205 500.0 280 502.0 335 C 504.0 405 518.0 462 532.0 528"/><path d="M 424 322 C 419 336 418 360 420 400 C 422 450 441 490 460 528"/><path d="M 406 333 C 398 340 396 362 397 400 C 398 450 412 490 427 528"/><path d="M 403.0 112 L 412.0 222"/><path d="M 392.0 110 L 399.0 218"/><path d="M 412.0 220 C 372.0 244 330.0 262 292.0 302"/><path d="M 424 236 C 436 262 434 300 424 322"/><path d="M 424.0 322 C 384.0 345 329.0 342 292.0 302"/><circle cx="292" cy="498" r="3" fill="currentColor" stroke="none"/></g></svg></div><div class="fig" data-s="band"><svg viewBox="40 30 504 510" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="M246 42 C244 78 226 96 186 108"/><path d="M186 108 C140 112 108 126 95 165 C82 205 84 280 82 335 C80 405 66 462 52 528"/><path d="M160 322 C165 336 166 360 164 400 C162 450 143 490 124 528"/><path d="M178 333 C186 340 188 362 187 400 C186 450 172 490 157 528"/><path d="M181 112 L172 222"/><path d="M192 110 L185 218"/><path d="M172 220 C212 244 254 262 292 302"/><path d="M160 236 C148 262 150 300 160 322"/><path d="M160 322 C200 345 255 342 292 302"/><path d="M 338.0 42 C 340.0 78 358.0 96 398.0 108"/><path d="M 398.0 108 C 444.0 112 476.0 126 489.0 165 C 502.0 205 500.0 280 502.0 335 C 504.0 405 518.0 462 532.0 528"/><path d="M 424 322 C 419 336 418 360 420 400 C 422 450 441 490 460 528"/><path d="M 406 333 C 398 340 396 362 397 400 C 398 450 412 490 427 528"/><path d="M 403.0 112 L 412.0 222"/><path d="M 392.0 110 L 399.0 218"/><path d="M 412.0 220 C 372.0 244 330.0 262 292.0 302"/><path d="M 424 236 C 436 262 434 300 424 322"/><path d="M 424.0 322 C 384.0 345 329.0 342 292.0 302"/><circle cx="292" cy="498" r="3" fill="currentColor" stroke="none"/><rect x="162" y="346" width="260" height="26" fill="var(--panel)"/><path stroke-width="2.4" d="M174 346 L174 359 M187 346 L187 353 M200 346 L200 353 M213 346 L213 353 M226 346 L226 359 M239 346 L239 353 M252 346 L252 353 M265 346 L265 353 M278 346 L278 359 M291 346 L291 353 M304 346 L304 353 M317 346 L317 353 M330 346 L330 359 M343 346 L343 353 M356 346 L356 353 M369 346 L369 353 M382 346 L382 359 M395 346 L395 353 M408 346 L408 353"/><text x="292" y="438" font-family="Jost, sans-serif" font-size="30" font-weight="500" letter-spacing="3" fill="currentColor" stroke="none" text-anchor="middle">BAND</text></g></svg></div><div class="fig" data-s="cup"><svg viewBox="40 30 504 510" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="M246 42 C244 78 226 96 186 108"/><path d="M186 108 C140 112 108 126 95 165 C82 205 84 280 82 335 C80 405 66 462 52 528"/><path d="M160 322 C165 336 166 360 164 400 C162 450 143 490 124 528"/><path d="M178 333 C186 340 188 362 187 400 C186 450 172 490 157 528"/><path d="M181 112 L172 222"/><path d="M192 110 L185 218"/><path d="M172 220 C212 244 254 262 292 302"/><path d="M160 236 C148 262 150 300 160 322"/><path d="M160 322 C200 345 255 342 292 302"/><path d="M 338.0 42 C 340.0 78 358.0 96 398.0 108"/><path d="M 398.0 108 C 444.0 112 476.0 126 489.0 165 C 502.0 205 500.0 280 502.0 335 C 504.0 405 518.0 462 532.0 528"/><path d="M 424 322 C 419 336 418 360 420 400 C 422 450 441 490 460 528"/><path d="M 406 333 C 398 340 396 362 397 400 C 398 450 412 490 427 528"/><path d="M 403.0 112 L 412.0 222"/><path d="M 392.0 110 L 399.0 218"/><path d="M 412.0 220 C 372.0 244 330.0 262 292.0 302"/><path d="M 424 236 C 436 262 434 300 424 322"/><path d="M 424.0 322 C 384.0 345 329.0 342 292.0 302"/><circle cx="292" cy="498" r="3" fill="currentColor" stroke="none"/><rect x="140" y="266" width="304" height="24" fill="var(--panel)"/><path stroke-width="2.4" d="M152 266 L152 277 M165 266 L165 272 M178 266 L178 272 M191 266 L191 272 M204 266 L204 277 M217 266 L217 272 M230 266 L230 272 M243 266 L243 272 M256 266 L256 277 M269 266 L269 272 M282 266 L282 272 M295 266 L295 272 M308 266 L308 277 M321 266 L321 272 M334 266 L334 272 M347 266 L347 272 M360 266 L360 277 M373 266 L373 272 M386 266 L386 272 M399 266 L399 272 M412 266 L412 277 M425 266 L425 272"/><text x="292" y="222" font-family="Jost, sans-serif" font-size="30" font-weight="500" letter-spacing="3" fill="currentColor" stroke="none" text-anchor="middle">CUP</text></g></svg></div></div>
+        <div class="live-copy" aria-live="polite"><h3 id="lt-h">Get ready</h3><p id="lt-p">Remove your top and wear your best-fitting, non-padded bra. Stand upright with shoulders relaxed.</p></div>
+        <div class="tabs" role="tablist" aria-label="How to measure"><button type="button" role="tab" data-s="ready" aria-selected="true">1. Ready</button><button type="button" role="tab" data-s="band" aria-selected="false">2. band</button><button type="button" role="tab" data-s="cup" aria-selected="false">3. cup</button></div>
+      </div>
       <div class="field">
         <label for="under">Underbust (band)</label>
         <p>Around your ribcage, directly under the bust. Snug, flat across the back and parallel to the floor.</p>
@@ -130,7 +142,7 @@ footer{border-top:1px solid var(--line);text-align:center;padding:28px 16px;font
         </div>
         <div class="rounded" id="over-r" aria-live="polite"></div>
       </div>
-      <p class="tip">Band rounds to the nearest even inch (an exact odd number rounds up). Overbust rounds to the nearest whole inch. Each inch of difference is one cup size.</p>
+      <p class="tip">Measurements are a starting point; fit varies by style. Band rounds to the nearest even inch (an exact odd number rounds up). Overbust rounds to the nearest whole inch. Each inch of difference is one cup size.</p>
     </div>
 
     <div class="result" aria-live="polite">
@@ -149,23 +161,6 @@ footer{border-top:1px solid var(--line);text-align:center;padding:28px 16px;font
     <p class="legend">Bands 30–46, cups A–I. All measurements in inches.</p>
   </section>
 
-  <section class="steps" aria-label="How to measure">
-    <div class="steps-grid">
-      <div class="step"><svg viewBox="40 30 504 510" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="M246 42 C244 78 226 96 186 108"/><path d="M186 108 C140 112 108 126 95 165 C82 205 84 280 82 335 C80 405 66 462 52 528"/><path d="M160 322 C165 336 166 360 164 400 C162 450 143 490 124 528"/><path d="M178 333 C186 340 188 362 187 400 C186 450 172 490 157 528"/><path d="M181 112 L172 222"/><path d="M192 110 L185 218"/><path d="M172 220 C212 244 254 262 292 302"/><path d="M160 236 C148 262 150 300 160 322"/><path d="M160 322 C200 345 255 342 292 302"/><path d="M 338.0 42 C 340.0 78 358.0 96 398.0 108"/><path d="M 398.0 108 C 444.0 112 476.0 126 489.0 165 C 502.0 205 500.0 280 502.0 335 C 504.0 405 518.0 462 532.0 528"/><path d="M 424 322 C 419 336 418 360 420 400 C 422 450 441 490 460 528"/><path d="M 406 333 C 398 340 396 362 397 400 C 398 450 412 490 427 528"/><path d="M 403.0 112 L 412.0 222"/><path d="M 392.0 110 L 399.0 218"/><path d="M 412.0 220 C 372.0 244 330.0 262 292.0 302"/><path d="M 424 236 C 436 262 434 300 424 322"/><path d="M 424.0 322 C 384.0 345 329.0 342 292.0 302"/><circle cx="292" cy="498" r="3" fill="currentColor" stroke="none"/></g></svg>
-        <h3>Get ready</h3>
-        <p>Remove your top and wear your best-fitting, non-padded bra. Stand upright with shoulders relaxed.</p>
-      </div>
-      <div class="step"><svg viewBox="40 30 504 510" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="M246 42 C244 78 226 96 186 108"/><path d="M186 108 C140 112 108 126 95 165 C82 205 84 280 82 335 C80 405 66 462 52 528"/><path d="M160 322 C165 336 166 360 164 400 C162 450 143 490 124 528"/><path d="M178 333 C186 340 188 362 187 400 C186 450 172 490 157 528"/><path d="M181 112 L172 222"/><path d="M192 110 L185 218"/><path d="M172 220 C212 244 254 262 292 302"/><path d="M160 236 C148 262 150 300 160 322"/><path d="M160 322 C200 345 255 342 292 302"/><path d="M 338.0 42 C 340.0 78 358.0 96 398.0 108"/><path d="M 398.0 108 C 444.0 112 476.0 126 489.0 165 C 502.0 205 500.0 280 502.0 335 C 504.0 405 518.0 462 532.0 528"/><path d="M 424 322 C 419 336 418 360 420 400 C 422 450 441 490 460 528"/><path d="M 406 333 C 398 340 396 362 397 400 C 398 450 412 490 427 528"/><path d="M 403.0 112 L 412.0 222"/><path d="M 392.0 110 L 399.0 218"/><path d="M 412.0 220 C 372.0 244 330.0 262 292.0 302"/><path d="M 424 236 C 436 262 434 300 424 322"/><path d="M 424.0 322 C 384.0 345 329.0 342 292.0 302"/><circle cx="292" cy="498" r="3" fill="currentColor" stroke="none"/><rect x="162" y="346" width="260" height="26" fill="var(--panel)"/><path stroke-width="2.4" d="M174 346 L174 359 M187 346 L187 353 M200 346 L200 353 M213 346 L213 353 M226 346 L226 359 M239 346 L239 353 M252 346 L252 353 M265 346 L265 353 M278 346 L278 359 M291 346 L291 353 M304 346 L304 353 M317 346 L317 353 M330 346 L330 359 M343 346 L343 353 M356 346 L356 353 M369 346 L369 353 M382 346 L382 359 M395 346 L395 353 M408 346 L408 353"/><text x="292" y="438" font-family="Jost, sans-serif" font-size="30" font-weight="500" letter-spacing="3" fill="currentColor" stroke="none" text-anchor="middle">BAND</text></g></svg>
-        <h3>Measure your band</h3>
-        <p>Tape directly under the bust, snug and level. Round to the nearest even number.</p>
-      </div>
-      <div class="step"><svg viewBox="40 30 504 510" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="M246 42 C244 78 226 96 186 108"/><path d="M186 108 C140 112 108 126 95 165 C82 205 84 280 82 335 C80 405 66 462 52 528"/><path d="M160 322 C165 336 166 360 164 400 C162 450 143 490 124 528"/><path d="M178 333 C186 340 188 362 187 400 C186 450 172 490 157 528"/><path d="M181 112 L172 222"/><path d="M192 110 L185 218"/><path d="M172 220 C212 244 254 262 292 302"/><path d="M160 236 C148 262 150 300 160 322"/><path d="M160 322 C200 345 255 342 292 302"/><path d="M 338.0 42 C 340.0 78 358.0 96 398.0 108"/><path d="M 398.0 108 C 444.0 112 476.0 126 489.0 165 C 502.0 205 500.0 280 502.0 335 C 504.0 405 518.0 462 532.0 528"/><path d="M 424 322 C 419 336 418 360 420 400 C 422 450 441 490 460 528"/><path d="M 406 333 C 398 340 396 362 397 400 C 398 450 412 490 427 528"/><path d="M 403.0 112 L 412.0 222"/><path d="M 392.0 110 L 399.0 218"/><path d="M 412.0 220 C 372.0 244 330.0 262 292.0 302"/><path d="M 424 236 C 436 262 434 300 424 322"/><path d="M 424.0 322 C 384.0 345 329.0 342 292.0 302"/><circle cx="292" cy="498" r="3" fill="currentColor" stroke="none"/><rect x="140" y="266" width="304" height="24" fill="var(--panel)"/><path stroke-width="2.4" d="M152 266 L152 277 M165 266 L165 272 M178 266 L178 272 M191 266 L191 272 M204 266 L204 277 M217 266 L217 272 M230 266 L230 272 M243 266 L243 272 M256 266 L256 277 M269 266 L269 272 M282 266 L282 272 M295 266 L295 272 M308 266 L308 277 M321 266 L321 272 M334 266 L334 272 M347 266 L347 272 M360 266 L360 277 M373 266 L373 272 M386 266 L386 272 M399 266 L399 272 M412 266 L412 277 M425 266 L425 272"/><text x="292" y="222" font-family="Jost, sans-serif" font-size="30" font-weight="500" letter-spacing="3" fill="currentColor" stroke="none" text-anchor="middle">CUP</text></g></svg>
-        <h3>Measure your cup</h3>
-        <p>Tape across the fullest part of the bust without pulling snug. Round to the nearest full inch.</p>
-      </div>
-    </div>
-    <p class="steps-note">Measurements are a starting point; fit varies by style.</p>
-  </section>
 </main>
 
 <footer>© 2026 Le Mystère, a Komar brand.</footer>
@@ -241,6 +236,19 @@ footer{border-top:1px solid var(--line);text-align:center;padding:28px 16px;font
   function pick(cell){ var b=+cell.dataset.b, i=+cell.dataset.i; under.value=b; over.value=b+i+1; render(); document.querySelector(".calc").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"}); }
   t.addEventListener("click",function(e){var c=e.target.closest("td.cell"); if(c) pick(c);});
   t.addEventListener("keydown",function(e){var c=e.target.closest("td.cell"); if(c&&(e.key==="Enter"||e.key===" ")){e.preventDefault();pick(c);}});
+  var STEPS={ready:["Get ready","Remove your top and wear your best-fitting, non-padded bra. Stand upright with shoulders relaxed."],band:["Measure your band","Tape directly under the bust, snug and level. Round to the nearest even number."],cup:["Measure your cup","Tape across the fullest part of the bust without pulling snug. Round to the nearest full inch."]};
+  function show(k){
+    document.querySelectorAll(".fig").forEach(function(e){e.classList.toggle("on",e.dataset.s===k);});
+    document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.s===k?"true":"false");});
+    $("lt-h").textContent=STEPS[k][0]; $("lt-p").textContent=STEPS[k][1];
+  }
+  document.querySelectorAll(".tabs button").forEach(function(b){b.addEventListener("click",function(){show(b.dataset.s);});});
+  [["under","band"],["over","cup"]].forEach(function(p){
+    var inp=$(p[0]), box=inp.closest(".field");
+    inp.addEventListener("focus",function(){show(p[1]);});
+    box.addEventListener("mouseenter",function(){show(p[1]);});
+    box.querySelectorAll("button").forEach(function(b){b.addEventListener("click",function(){show(p[1]);});});
+  });
   render();
 })();
 </script>
